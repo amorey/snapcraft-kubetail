@@ -1,0 +1,48 @@
+name: kubetail
+title: Kubetail
+base: core22
+version: '0.8.2'
+summary: Real-time logging dashboard for Kubernetes
+description: |
+  Kubetail is a general-purpose logging dashboard for Kubernetes, optimized for
+  tailing logs across multi-container workloads in real-time. With Kubetail,
+  you can view logs from all the containers in a workload merged into a single,
+  chronological timeline, delivered to your browser or terminal.
+
+grade: stable
+confinement: strict
+
+license: Apache-2.0
+contact: https://github.com/kubetail-org/kubetail/issues
+website: https://kubetail.com
+source-code: https://github.com/kubetail-org/kubetail
+issues: https://github.com/kubetail-org/kubetail/issues
+donation: https://github.com/sponsors/kubetail-org
+
+apps:
+  kubetail:
+    command: kubetail
+    plugs:
+      - home
+      - network
+
+parts:
+  kubetail:
+    plugin: dump
+    source: .
+    override-build: |
+      set -eux
+
+      ARCH="${CRAFT_ARCH_BUILD_ON}"
+      VERSION="${SNAPCRAFT_PROJECT_VERSION}"
+
+      # Download the prebuilt tarball for this architecture
+      curl -L -o kubetail.tar.gz \
+        "https://github.com/kubetail-org/kubetail/releases/download/cli%2Fv${VERSION}/kubetail-linux-${ARCH}.tar.gz"
+
+      # Extract and install the binary
+      tar -xzf kubetail.tar.gz
+      install -Dm755 kubetail "${CRAFT_PART_INSTALL}/kubetail"
+    build-packages:
+      - curl
+      - tar

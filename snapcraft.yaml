@@ -1,7 +1,7 @@
 name: kubetail
 title: Kubetail
 base: core22
-version: '0.8.2'
+version: '0.9.0'
 summary: Real-time logging dashboard for Kubernetes
 description: |
   Kubetail is a general-purpose logging dashboard for Kubernetes, optimized for
